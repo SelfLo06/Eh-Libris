@@ -1,5 +1,6 @@
 package com.libris.eh_libris.controller;
 
+import com.libris.eh_libris.model.dto.CommentDto;
 import com.libris.eh_libris.model.dto.GalleryPageDto;
 import com.libris.eh_libris.service.ReaderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,6 +48,16 @@ public class ReaderController {
         } catch (IOException e) {
             e.printStackTrace();
             throw new RuntimeException("解析图片失败: " + e.getMessage());
+        }
+    }
+
+    @GetMapping("/comments")
+    public List<CommentDto> getComments(@RequestParam Long gid, @RequestParam String token) {
+        try {
+            return readerService.getGalleryComments(gid, token);
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new RuntimeException("获取评论失败: " + e.getMessage());
         }
     }
 }
