@@ -2,7 +2,9 @@ package com.libris.eh_libris.controller;
 
 import com.libris.eh_libris.model.dto.CommentDto;
 import com.libris.eh_libris.model.dto.GalleryPageDto;
+import com.libris.eh_libris.model.dto.ReadProgressDto;
 import com.libris.eh_libris.service.ReaderService;
+import com.libris.eh_libris.service.ReadHistoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,6 +18,9 @@ public class ReaderController {
 
     @Autowired
     private ReaderService readerService;
+
+    @Autowired
+    private ReadHistoryService readHistoryService;
 
     /**
      * 获取画廊的分页列表 (懒加载模式：前端一页一页请求目录)
@@ -59,5 +64,18 @@ public class ReaderController {
             e.printStackTrace();
             throw new RuntimeException("获取评论失败: " + e.getMessage());
         }
+    }
+
+    @GetMapping("/progress")
+    public ReadProgressDto getProgress(@RequestParam Long gid) {
+        return readHistoryService.getProgress(gid);
+    }
+
+    @PostMapping("/progress")
+    public ReadProgressDto saveProgress(@RequestBody ReadProgressDto request) {
+        if (request == null || request.getGid() == null) {
+            throw new RuntimeException("参数错误：gid 不能为空");
+        }
+        return readHistoryService.saveProgress(request.getGid(), request.getPageIndex());
     }
 }

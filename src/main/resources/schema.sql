@@ -34,3 +34,19 @@ CREATE TABLE IF NOT EXISTS gallery_tag_map (
         tid INT NOT NULL,                 -- 标签 ID
         PRIMARY KEY (gid, tid)
     );
+
+-- 3. 阅读历史表：记录每本画廊上次阅读到的页码
+CREATE TABLE IF NOT EXISTS read_history (
+        gid BIGINT PRIMARY KEY,
+        page_index INT NOT NULL DEFAULT 0,
+        updated_at BIGINT
+    );
+
+-- 4. 收藏表：记录本地收藏状态（兼容后续扩展到远端同步）
+CREATE TABLE IF NOT EXISTS favorite_gallery (
+        gid BIGINT PRIMARY KEY,
+        token VARCHAR(255) NOT NULL,
+        fav_cat INT DEFAULT 0,
+        fav_note VARCHAR(255),
+        updated_at BIGINT
+    );

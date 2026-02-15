@@ -43,4 +43,8 @@ public class Gallery {
     // tags 在数据库里通常需要单独存关联表，我们先让 MP 忽略这个字段
     @TableField(exist = false)
     private List<String> tags;   // 标签列表（暂时存在 Model 里，后面存数据库要拆表）
+
+    // 前端 UI 使用：标记是否收藏，不入库
+    @TableField(exist = false)
+    private Boolean favorite;
 }
